@@ -1,7 +1,5 @@
 package com.example.tamper_record;
 
-import java.sql.Date;
-import java.text.ParseException;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,19 +24,13 @@ import android.widget.RemoteViews.RemoteView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import java.util.*;
-import java.text.*;
+import android.app.Activity;
 
 public class MainActivity extends Activity
 {
-	static LinearLayout setInfo;
-	EditText inputNum, inputBody;
+	static MainActivity instance;
 	Button setSms;
-	RadioButton rx_bt;
-	RadioButton tx_bt;
-	RadioGroup group;
-	TimePicker timepicker;
-	DatePicker datepicker;
+	Button setCall;
 
 	public static Uri mSmsUri = Uri.parse("content://sms");
 
@@ -49,70 +41,30 @@ public class MainActivity extends Activity
 			@Override
 			public void onClick(View v)
 			{
-				setInfo = (LinearLayout) getLayoutInflater().inflate(
-						R.layout.setinfo, null);
-				inputNum = (EditText) setInfo.findViewById(R.id.input_num);
-				inputBody = (EditText) setInfo.findViewById(R.id.input_body);
-				timepicker = (TimePicker) setInfo.findViewById(R.id.timepicker);
-				datepicker = (DatePicker) setInfo.findViewById(R.id.datepicker);
-				rx_bt = (RadioButton) setInfo.findViewById(R.id.rx);
-
-				new AlertDialog.Builder(MainActivity.this)
-						.setView(setInfo)
-						.setPositiveButton("确定",
-								new DialogInterface.OnClickListener()
-								{
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which)
-									{
-										try
-										{
-											insertsms();
-											Toast.makeText(MainActivity.this,
-													"添加短信成功!",
-													Toast.LENGTH_SHORT).show();
-											finish();
-										} catch (ParseException e)
-										{
-											e.printStackTrace();
-										}
-									}
-								}).setNegativeButton("取消", null).show();
+				new InsertSms(MainActivity.this).SmsDialog();
 			}
 		});
 	}
 
+	public void setCall()
+	{
+		setCall.setOnClickListener(new OnClickListener()
+		{
+			
+			@Override
+			public void onClick(View v)
+			{
+				new InsertCall(MainActivity.this).CallDialog();
+			}
+		});
+	}
+	
 	public void widget_init()
 	{
-		setSms = (Button) findViewById(R.id.set_info);
+		setSms = (Button) findViewById(R.id.insert_sms);
+		setCall = (Button) findViewById(R.id.insert_call);
 		setSms();
-	}
-
-	private void insertsms() throws ParseException
-	{
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(datepicker.getYear(), datepicker.getMonth(),
-				datepicker.getDayOfMonth(), timepicker.getCurrentHour(),
-				timepicker.getCurrentMinute());
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-
-		ContentValues values = new ContentValues();
-		values.put("address", inputNum.getText().toString());
-		values.put("body", inputBody.getText().toString());
-		values.put("date", calendar.getTime().getTime());
-		values.put("read", 0);
-
-		if (rx_bt.isChecked())
-		{
-			values.put("type", 1);
-		}
-		else
-		{
-			values.put("type", 2);
-		}
-		values.put("service_center", "+8613010776500");
-		getContentResolver().insert(mSmsUri, values);
+		setCall();
 	}
 
 	@Override
@@ -120,9 +72,8 @@ public class MainActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		instance = this;
 		widget_init();
-
 	}
 
 	@Override
