@@ -27,7 +27,7 @@ public class InsertCall
 {
 	static LinearLayout setInfo;
 	LayoutInflater inflater;
-	EditText inputNum, inputMinutes , inputSeconds;
+	EditText inputNum, inputMinutes, inputSeconds;
 	RadioButton rx_bt, rx_miss_bt;
 	TimePicker timepicker;
 	DatePicker datepicker;
@@ -46,30 +46,31 @@ public class InsertCall
 
 	private void insertCall() throws ParseException
 	{
-		int minutes , seconds;
+		int duration = Integer.parseInt(inputMinutes.getText().toString()) * 60
+				+ Integer.parseInt(inputSeconds.getText().toString());
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(datepicker.getYear(), datepicker.getMonth(),
 				datepicker.getDayOfMonth(), timepicker.getCurrentHour(),
 				timepicker.getCurrentMinute());
 
 		ContentValues values = new ContentValues();
-		values.put(CallLog.Calls.NUMBER, inputNum.getText().toString()); // Set contacts number
-		values.put(CallLog.Calls.DATE, calendar.getTime().getTime()); 	// Set communication date 
-//		values.put(CallLog.Calls.DURATION, input.getText().toString()); // Set communication duration
-		values.put(CallLog.Calls.NEW, 1); 							// Set the call type is unread
+		values.put(CallLog.Calls.NUMBER, inputNum.getText().toString());       			// Set contacts number
+		values.put(CallLog.Calls.DATE, calendar.getTime().getTime()); 					// Set communication date 
+		values.put(CallLog.Calls.DURATION, duration);       							// Set communication duration
+		values.put(CallLog.Calls.NEW, 1); 												// Set the call type is unread
 
 		if (rx_bt.isChecked())
 		{
-			values.put(CallLog.Calls.TYPE, INCOMING_TYPE);                    			// Set the contacts Type by the radio button
-		} else if(rx_miss_bt.isChecked())
+			values.put(CallLog.Calls.TYPE, INCOMING_TYPE); 								// Set the contacts Type by the radio button
+		} else if (rx_miss_bt.isChecked())
 		{
 			values.put(CallLog.Calls.TYPE, MISSED_TYPE);
-		}
-		else
+		} else
 		{
 			values.put(CallLog.Calls.TYPE, OUTGOING_TYPE);
 		}
-		context.getContentResolver().insert(CallLog.Calls.CONTENT_URI, values);	}
+		context.getContentResolver().insert(CallLog.Calls.CONTENT_URI, values);
+	}
 
 	void CallDialog()
 	{
@@ -78,11 +79,11 @@ public class InsertCall
 		setInfo = (LinearLayout) inflater.inflate(R.layout.set_call, null);
 		inputNum = (EditText) setInfo.findViewById(R.id.input_callnum);
 		inputMinutes = (EditText) setInfo.findViewById(R.id.input_minites);
-		inputSeconds = (EditText)setInfo.findViewById(R.id.input_seconds);
+		inputSeconds = (EditText) setInfo.findViewById(R.id.input_seconds);
 		timepicker = (TimePicker) setInfo.findViewById(R.id.timepicker);
 		datepicker = (DatePicker) setInfo.findViewById(R.id.datepicker);
 		rx_bt = (RadioButton) setInfo.findViewById(R.id.rx);
-		rx_miss_bt = (RadioButton)setInfo.findViewById(R.id.rx_miss);
+		rx_miss_bt = (RadioButton) setInfo.findViewById(R.id.rx_miss);
 
 		new AlertDialog.Builder(context).setView(setInfo)
 				.setPositiveButton("È·¶¨", new DialogInterface.OnClickListener()

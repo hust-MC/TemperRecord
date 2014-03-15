@@ -15,10 +15,9 @@
             android:text="号码:" />
 
         <EditText
-            android:id="@+id/input_callnum"
+            android:id="@+id/input_num"
             style="@style/edittext_style"
-            android:hint="请输入号码"
-            android:inputType="number" />
+            android:hint="请输入号码" />
     </LinearLayout>
 
     <LinearLayout
@@ -27,70 +26,41 @@
         android:orientation="horizontal" >
 
         <TextView
-             android:layout_marginLeft="5dp"
             style="@style/textview_style"
-            android:text="通话时长:" />
+            android:text="内容:" />
 
         <EditText
-            android:id="@+id/input_minites"
+            android:id="@+id/input_body"
             style="@style/edittext_style"
-            android:layout_width="50dp"
-            android:layout_height="35dp"
-            android:layout_marginRight="0dp"
-            android:hint="分"
-            android:inputType="number" />
-
-        <TextView
-            android:layout_marginLeft="5dp"
-            style="@style/textview_style"
-            android:text="分" />
-
-        <EditText
-            android:id="@+id/input_seconds"
-            style="@style/edittext_style"
-            android:layout_width="50dp"
-            android:layout_height="35dp"
-            android:layout_marginRight="0dp"
-            android:hint="秒"
-            android:inputType="number" />
-
-        <TextView
-            style="@style/textview_style"
-            android:text="秒" />
+            android:hint="请输入短信内容" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="horizontal" >
 
         <TextView
             style="@style/textview_style"
-            android:text="通话发向:" />
+            android:text="短信发向:" />
 
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:orientation="horizontal" >
-
-            <RadioButton
-                android:id="@+id/rx_miss"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="未接" />
 
             <RadioButton
                 android:id="@+id/rx"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="已接" />
+                android:text="接收" />
 
             <RadioButton
                 android:id="@+id/tx"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="去电" />
+                android:text="发送" />
         </RadioGroup>
     </LinearLayout>
 
